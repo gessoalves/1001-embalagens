@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MegaEmbalagens & Festas - Atacado e Varejo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-800 flex flex-col font-sans antialiased">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-sm sticky top-0 z-40 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchView('store')">
+                <div class="w-12 h-12 bg-brand-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+                    <i class="fa-solid fa-box-open text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-slate-900">MegaEmbalagens</h1>
+                    <p class="text-xs text-slate-500 font-medium">Atacado, Varejo & Personalizados</p>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-6 text-sm font-medium">
+                <button onclick="switchView('store')" id="nav-store" class="text-brand-600 font-semibold transition hover:text-brand-700">Loja & Catálogo</button>
+                <button onclick="switchView('custom')" id="nav-custom" class="text-slate-600 transition hover:text-brand-600">Personalize seu Evento</button>
+                <button onclick="switchView('seller')" id="nav-seller" class="text-slate-600 transition hover:text-brand-600 flex items-center gap-1.5 bg-brand-50 text-brand-700 px-3 py-1.5 rounded-lg border border-brand-200">
+                    <i class="fa-solid fa-cash-register"></i> Área do Vendedor
+                </button>
+            </nav>
+
+            <!-- Cart & Mobile Actions -->
+            <div class="flex items-center space-x-3">
+                <button onclick="openCart()" class="relative p-2.5 rounded-xl bg-slate-100 text-slate-700 hover:bg-brand-50 hover:text-brand-600 transition">
+                    <i class="fa-solid fa-shopping-cart text-lg"></i>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 bg-brand-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden">0</span>
+                </button>
+                <button onclick="toggleMobileMenu()" class="md:hidden p-2.5 rounded-xl bg-slate-100 text-slate-700">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-200 px-4 pt-3 pb-4 space-y-2">
+            <button onclick="switchView('store'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-slate-700 font-medium hover:bg-slate-100">Loja & Catálogo</button>
+            <button onclick="switchView('custom'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-slate-700 font-medium hover:bg-slate-100">Personalize seu Evento</button>
+            <button onclick="switchView('seller'); toggleMobileMenu();" class="block w-full text-left px-3 py-2 rounded-lg text-brand-700 bg-brand-50 font-semibold">Área do Vendedor</button>
+        </div>
+    </header>
+
+    <!-- Main App Container -->
+    <main class="flex-1 overflow-y-auto">
+
+        <!-- VIEW 1: STORE / CATALOG -->
+        <div id="view-store" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+            <!-- Hero Banner -->
+            <div class="relative rounded-3xl bg-gradient-to-r from-brand-900 via-brand-700 to-emerald-600 text-white p-8 sm:p-12 overflow-hidden shadow-xl">
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <span class="inline-block bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">Atacado & Varejo Direto da Fábrica</span>
+                    <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Embalagens, Festas e Delivery para o seu Negócio</h2>
+                    <p class="text-slate-100 text-sm sm:text-base">Encontre tudo para restaurantes, confeitarias, aniversários e casamentos. Compre avulso no varejo ou em grande volume com desconto progressivo no atacado.</p>
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <button onclick="filterCategory('all')" class="bg-white text-brand-900 font-semibold px-5 py-2.5 rounded-xl shadow-md hover:bg-slate-100 transition">Ver Catálogo</button>
+                        <button onclick="switchView('custom')" class="bg-brand-600/50 hover:bg-brand-600 text-white border border-white/30 font-semibold px-5 py-2.5 rounded-xl backdrop-blur-md transition">Fazer Produto Personalizado</button>
+                    </div>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-box text-[280px]"></i>
+                </div>
+            </div>
+
+            <!-- Categories Filter -->
+            <div class="space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <h3 class="text-xl font-bold text-slate-900">Explore por Categoria</h3>
+                    <!-- Search Input -->
+                    <div class="relative w-full sm:w-72">
+                        <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-search"></i>
+                        </span>
+                        <input type="text" id="search-input" oninput="handleSearch()" placeholder="Buscar produtos..." class="w-full pl-10 pr-4 py-2 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    </div>
+                </div>
+
+                <!-- Category Pills -->
+                <div class="flex gap-2 overflow-x-auto pb-2 custom-scrollbar" id="category-pills">
+                    <button onclick="filterCategory('all')" class="cat-pill active whitespace-nowrap px-4 py-2 rounded-xl text-sm font-medium bg-brand-600 text-white shadow-sm transition">Todos os Produtos</button>
+                    <button onclick="filterCategory('atacado')" class="cat-pill whitespace-nowrap px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Atacado Caixas</button>
+                    <button onclick="filterCategory('varejo')" class="cat-pill whitespace-nowrap px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Varejo Pronta Entrega</button>
+                    <button onclick="filterCategory('festa')" class="cat-pill whitespace-nowrap px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Festas & Decoração</button>
+                    <button onclick="filterCategory('delivery')" class="cat-pill whitespace-nowrap px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Restaurantes & Delivery</button>
+                    <button onclick="filterCategory('personalizado')" class="cat-pill whitespace-nowrap px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition">Personalizados</button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Dynamically populated products -->
+            </div>
+        </div>
+
+        <!-- VIEW 2: CUSTOM PRODUCTS BUILDER -->
+        <div id="view-custom" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 hidden">
+            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-slate-200 space-y-6">
+                <div>
+                    <span class="text-xs font-bold text-brand-600 uppercase tracking-wider">Studio de Criação</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">Personalize Embalagens & Festas</h2>
+                    <p class="text-slate-600 text-sm mt-1">Escolha o modelo, tema, texto e cores para eventos, festas de aniversário, casamentos ou embalagens com a marca da sua empresa.</p>
+                </div>
+
+                <form id="custom-form" onsubmit="submitCustomOrder(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Tipo de Produto -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Tipo de Produto</label>
+                            <select id="custom-type" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500">
+                                <option value="Caixa para Bolo Personalizada">Caixa para Bolo / Confeitaria</option>
+                                <option value="Sacola Kraft com Logo">Sacola Kraft com sua Logomarca</option>
+                                <option value="Kitfesta Personalizado (Tema)">Kit Festa Completo (Com Tema)</option>
+                                <option value="Copos e Guardanapos p/ Evento">Copos & Guardanapos Personalizados</option>
+                                <option value="Embalagem p/ Delivery c/ Marca">Embalagem p/ Delivery com Marca</option>
+                            </select>
+                        </div>
+
+                        <!-- Quantidade -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Quantidade Mínima</label>
+                            <select id="custom-qty" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500">
+                                <option value="50">50 unidades (Varejo Especial)</option>
+                                <option value="100">100 unidades</option>
+                                <option value="500">500 unidades (Desconto Atacado)</option>
+                                <option value="1000">1.000 unidades (Melhor Preço)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <!-- Tema / Cores -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Tema ou Paleta de Cores</label>
+                            <input type="text" id="custom-theme" required placeholder="Ex: Safari Baby, Dourado e Branco, Logo Azul Royal" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500">
+                        </div>
+
+                        <!-- Texto / Nome -->
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-2">Texto / Nome na Decoração ou Embalagem</label>
+                            <input type="text" id="custom-text" required placeholder="Ex: 'Parabéns Lucas 1 aninho' ou 'Lanchonete do João'" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500">
+                        </div>
+                    </div>
+
+                    <!-- Observações -->
+                    <div>
+                        <label class="block text-sm font-semibold text-slate-700 mb-2">Observações Detalhadas</label>
+                        <textarea id="custom-obs" rows="3" placeholder="Descreva detalhes adicionais, fontes desejadas, posicionamento da arte..." class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500"></textarea>
+                    </div>
+
+                    <div class="bg-brand-50 p-4 rounded-2xl border border-brand-200 flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-bold text-brand-900">Orçamento sob consulta / Análise de Arte</p>
+                            <p class="text-xs text-brand-700">Nossa equipe entrará em contato ou gerará o PIX com base no volume escolhido.</p>
+                        </div>
+                        <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white font-semibold px-6 py-3 rounded-xl shadow-md transition flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Solicitar Orçamento / Pedido
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- VIEW 3: SELLER DASHBOARD (ÁREA DO VENDEDOR) -->
+        <div id="view-seller" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 hidden">
+            <!-- Seller Header & Login / Select -->
+            <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="flex items-center space-x-4">
+                    <div class="w-14 h-14 bg-emerald-100 text-brand-700 rounded-2xl flex items-center justify-center font-bold text-2xl shadow-inner">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-2xl font-bold text-slate-900" id="seller-welcome-name">Painel do Vendedor</h2>
+                            <span class="bg-emerald-100 text-brand-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Ativo</span>
+                        </div>
+                        <p class="text-sm text-slate-500">Gerencie suas cobranças PIX, acompanhe comissões e histórico de vendas.</p>
+                    </div>
+                </div>
+
+                <!-- Select Seller -->
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                    <label class="text-sm font-semibold text-slate-600 whitespace-nowrap">Vendedor:</label>
+                    <select id="seller-selector" onchange="changeSeller(this.value)" class="bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm font-medium focus:ring-2 focus:ring-brand-500">
+                        <option value="Carlos Silva">Carlos Silva (Varejo & Atacado)</option>
+                        <option value="Ana Souza">Ana Souza (Festas & Eventos)</option>
+                        <option value="Marcos Lima">Marcos Lima (Restaurantes & Delivery)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+                    <div class="flex items-center justify-between text-slate-500">
+                        <span class="text-sm font-medium">Total Cobrado (PIX)</span>
+                        <div class="p-2.5 bg-blue-50 text-blue-600 rounded-xl"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    </div>
+                    <h3 class="text-3xl font-extrabold text-slate-900" id="stat-total-billed">R$ 0,00</h3>
+                    <p class="text-xs text-slate-500">Cobranças geradas por você</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+                    <div class="flex items-center justify-between text-slate-500">
+                        <span class="text-sm font-medium">Vendas Confirmadas</span>
+                        <div class="p-2.5 bg-emerald-50 text-brand-600 rounded-xl"><i class="fa-solid fa-circle-check"></i></div>
+                    </div>
+                    <h3 class="text-3xl font-extrabold text-slate-900" id="stat-total-paid">R$ 0,00</h3>
+                    <p class="text-xs text-brand-500">PIX compensados com sucesso</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm space-y-2">
+                    <div class="flex items-center justify-between text-slate-500">
+                        <span class="text-sm font-medium">Cobranças Pendentes</span>
+                        <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl"><i class="fa-solid fa-clock"></i></div>
+                    </div>
+                    <h3 class="text-3xl font-extrabold text-slate-900" id="stat-total-pending">R$ 0,00</h3>
+                    <p class="text-xs text-slate-500">Aguardando pagamento do cliente</p>
+                </div>
+            </div>
+
+            <!-- Actions & Generator Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Form to Generate PIX Charge -->
+                <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6 lg:col-span-1">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-slate-900">Gerar Nova Cobrança PIX</h3>
+                        <i class="fa-solid fa-qrcode text-brand-600 text-xl"></i>
+                    </div>
+
+                    <form id="pix-form" onsubmit="generatePixCharge(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Nome do Cliente</label>
+                            <input type="text" id="pix-client-name" required placeholder="Ex: Empresa ABC ou Cliente João" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">WhatsApp / Contato</label>
+                            <input type="text" id="pix-client-phone" required placeholder="(11) 99999-9999" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Descrição do Pedido / Produtos</label>
+                            <input type="text" id="pix-description" required placeholder="Ex: 500 Caixas Kraft + 200 Copos" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">Valor Total (R$)</label>
+                            <input type="number" step="0.01" min="1" id="pix-amount" required placeholder="150.00" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-500">
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> Gerar PIX e Chave Copia e Cola
+                        </button>
+                    </form>
+                </div>
+
+                <!-- List of Generated Charges -->
+                <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6 lg:col-span-2">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-slate-900">Histórico de Cobranças & Vendas</h3>
+                        <div class="flex items-center gap-2">
+                            <button onclick="filterCharges('all')" id="filter-all" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-brand-600 text-white transition">Todas</button>
+                            <button onclick="filterCharges('pendente')" id="filter-pendente" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Pendentes</button>
+                            <button onclick="filterCharges('pago')" id="filter-pago" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition">Pagas</button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-200 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                    <th class="pb-3">Cliente / Descrição</th>
+                                    <th class="pb-3">Valor</th>
+                                    <th class="pb-3">Vendedor</th>
+                                    <th class="pb-3">Status</th>
+                                    <th class="pb-3 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="charges-table-body" class="divide-y divide-slate-100 text-sm">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- CART / CHECKOUT MODAL -->
+    <div id="cart-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200 max-h-[90vh] flex flex-col">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-shopping-bag text-brand-600"></i> Seu Carrinho
+                </h3>
+                <button onclick="closeCart()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Cart Items List -->
+            <div id="cart-items-container" class="flex-1 overflow-y-auto space-y-4 pr-1 custom-scrollbar">
+                <!-- Dynamically populated cart items -->
+            </div>
+
+            <!-- Cart Footer / Total -->
+            <div class="border-t border-slate-100 pt-4 space-y-4">
+                <div class="flex items-center justify-between text-lg font-bold text-slate-900">
+                    <span>Total do Pedido:</span>
+                    <span id="cart-total-price">R$ 0,00</span>
+                </div>
+                <button onclick="proceedToCheckout()" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3.5 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock"></i> Finalizar Pedido com PIX / Vendedor
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIX PAYMENT MODAL FOR CUSTOMERS -->
+    <div id="pix-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-6 shadow-2xl text-center">
+            <div class="w-16 h-16 bg-emerald-100 text-brand-600 rounded-full flex items-center justify-center text-3xl mx-auto shadow-inner">
+                <i class="fa-solid fa-qrcode"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-slate-900">PIX Gerado com Sucesso!</h3>
+                <p class="text-sm text-slate-500 mt-1">Escaneie o QR Code abaixo ou copie a chave PIX Copia e Cola para pagar.</p>
+            </div>
+
+            <!-- Simulated QR Code -->
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 inline-block mx-auto">
+                <img id="pix-qrcode-img" src="https://placehold.co/200x200/22c55e/ffffff?text=QR+Code+PIX" alt="QR Code PIX" class="rounded-xl mx-auto">
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider">PIX Copia e Cola</label>
+                <div class="flex items-center gap-2">
+                    <input type="text" id="pix-copy-input" readonly class="w-full bg-slate-100 border border-slate-300 rounded-xl px-3 py-2 text-xs text-slate-600 select-all font-mono">
+                    <button onclick="copyPixCode()" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-xl text-xs font-semibold whitespace-nowrap transition flex items-center gap-1">
+                        <i class="fa-solid fa-copy"></i> Copiar
+                    </button>
+                </div>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="closePixModal()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 rounded-xl transition">
+                    Fechar / Concluído
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION TOAST -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+        <i id="toast-icon" class="fa-solid fa-check-circle text-brand-500 text-lg"></i>
+        <span id="toast-msg" class="text-sm font-medium">Ação realizada com sucesso!</span>
+    </div>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Mock Products Catalog (Atacado, Varejo, Festas, Delivery, Personalizados)
+        const products = [
+            { id: 1, name: 'Caixa Kraft para Bolo Alta (Atacado 50un)', category: 'atacado', price: 189.90, image: 'https://placehold.co/400x300/15803d/ffffff?text=Caixa+Bolo+Atacado', badge: 'Atacado -15%' },
+            { id: 2, name: 'Sacos de Papel Kraft p/ Delivery (Pct 100un)', category: 'delivery', price: 65.00, image: 'https://placehold.co/400x300/16a34a/ffffff?text=Sacos+Delivery', badge: 'Mais Vendido' },
+            { id: 3, name: 'Kit Festa Completo Tema Safari (Personalizável)', category: 'festa', price: 149.90, image: 'https://placehold.co/400x300/22c55e/ffffff?text=Kit+Festa+Safari', badge: 'Personalizável' },
+            { id: 4, name: 'Embalagem Marmitex Alumínio c/ Tampa (100un)', category: 'varejo', price: 48.50, image: 'https://placehold.co/400x300/14532d/ffffff?text=Marmitex+Aluminio', badge: 'Pronta Entrega' },
+            { id: 5, name: 'Caixa para Hambúrguer Térmica (Pct 50un)', category: 'delivery', price: 39.90, image: 'https://placehold.co/400x300/15803d/ffffff?text=Caixa+Hamburgao', badge: 'Restaurantes' },
+            { id: 6, name: 'Balões Metalizados & Velas de Aniversário', category: 'festa', price: 22.00, image: 'https://placehold.co/400x300/16a34a/ffffff?text=Baloes+e+Velas', badge: 'Decoração' },
+            { id: 7, name: 'Sacola Ecológica Personalizada com Logo', category: 'personalizado', price: 299.00, image: 'https://placehold.co/400x300/22c55e/ffffff?text=Sacola+Personalizada', badge: 'Sob Encomenda' },
+            { id: 8, name: 'Formas de Docinhos e Cachepôs (Atacado)', category: 'atacado', price: 34.90, image: 'https://placehold.co/400x300/14532d/ffffff?text=Formas+Doces', badge: 'Atacado' }
+        ];
+
+        // Application State
+        let cart = [];
+        let currentCategory = 'all';
+        let currentSearch = '';
+        let currentSeller = 'Carlos Silva';
+        let filterChargeStatus = 'all';
+
+        // Initialize LocalStorage for Charges if not present
+        if (!localStorage.getItem('mega_charges')) {
+            const initialCharges = [
+                { id: 'CHG-1001', client: 'Lanchonete Sabor & Arte', phone: '(11) 98888-1111', description: '500 Embalagens Delivery', amount: 350.00, seller: 'Carlos Silva', status: 'pago', pixCode: '00020126580014br.gov.bcb.pix...' },
+                { id: 'CHG-1002', client: 'Buffet Infantil Alegria', phone: '(11) 97777-2222', description: 'Kit Festa Completo Tema Unicórnio', amount: 280.00, seller: 'Ana Souza', status: 'pendente', pixCode: '00020126580014br.gov.bcb.pix...' },
+                { id: 'CHG-1003', client: 'Pizzaria Bella Napoli', phone: '(11) 96666-3333', description: 'Caixas de Pizza Personalizadas', amount: 890.00, seller: 'Marcos Lima', status: 'pendente', pixCode: '00020126580014br.gov.bcb.pix...' }
+            ];
+            localStorage.setItem('mega_charges', JSON.stringify(initialCharges));
+        }
+
+        // On Load Initialization
+        window.onload = function() {
+            renderProducts();
+            updateCartBadge();
+            renderSellerDashboard();
+        }
+
+        // View Switcher
+        function switchView(viewName) {
+            document.getElementById('view-store').classList.add('hidden');
+            document.getElementById('view-custom').classList.add('hidden');
+            document.getElementById('view-seller').classList.add('hidden');
+
+            document.getElementById('nav-store').className = "text-slate-600 transition hover:text-brand-600 font-medium";
+            document.getElementById('nav-custom').className = "text-slate-600 transition hover:text-brand-600 font-medium";
+            document.getElementById('nav-seller').className = "text-slate-600 transition hover:text-brand-600 flex items-center gap-1.5 bg-brand-50 text-brand-700 px-3 py-1.5 rounded-lg border border-brand-200 font-medium";
+
+            if (viewName === 'store') {
+                document.getElementById('view-store').classList.remove('hidden');
+                document.getElementById('nav-store').className = "text-brand-600 font-semibold transition";
+            } else if (viewName === 'custom') {
+                document.getElementById('view-custom').classList.remove('hidden');
+                document.getElementById('nav-custom').className = "text-brand-600 font-semibold transition";
+            } else if (viewName === 'seller') {
+                document.getElementById('view-seller').classList.remove('hidden');
+                document.getElementById('nav-seller').className = "flex items-center gap-1.5 bg-brand-600 text-white px-3 py-1.5 rounded-lg font-semibold transition";
+                renderSellerDashboard();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Render Products Catalog
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+
+            const filtered = products.filter(p => {
+                const matchesCat = currentCategory === 'all' || p.category === currentCategory;
+                const matchesSearch = p.name.toLowerCase().includes(currentSearch.toLowerCase());
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center space-y-3">
+                        <i class="fa-solid fa-box-open text-4xl text-slate-300"></i>
+                        <p class="text-slate-500 font-medium">Nenhum produto encontrado.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(product => {
+                grid.innerHTML += `
+                    <div class="bg-white rounded-3xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+                        <div class="space-y-3">
+                            <div class="relative rounded-2xl overflow-hidden aspect-video bg-slate-100">
+                                <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                <span class="absolute top-3 left-3 bg-brand-600 text-white text-xs font-semibold px-2.5 py-1 rounded-lg shadow-sm">${product.badge}</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 line-clamp-2">${product.name}</h4>
+                        </div>
+                        <div class="pt-4 flex items-center justify-between mt-4 border-t border-slate-100">
+                            <div>
+                                <span class="text-xs text-slate-400 block">Preço</span>
+                                <span class="text-lg font-extrabold text-brand-700">R$ ${product.price.toFixed(2).replace('.', ',')}</span>
+                            </div>
+                            <button onclick="addToCart(${product.id})" class="bg-brand-50 hover:bg-brand-600 text-brand-700 hover:text-white p-3 rounded-xl transition font-semibold text-sm flex items-center gap-1.5">
+                                <i class="fa-solid fa-cart-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-pill').forEach(btn => {
+                btn.className = "cat-pill whitespace-nowrap px-4 py-2 rounded-xl text-sm font-medium bg-white text-slate-700 border border-slate-200 hover:bg-slate-100 transition";
+            });
+            event.target.className = "cat-pill whitespace-nowrap px-4 py-2 rounded-xl text-sm font-medium bg-brand-600 text-white shadow-sm transition";
+            renderProducts();
+        }
+
+        function handleSearch() {
+            currentSearch = document.getElementById('search-input').value;
+            renderProducts();
+        }
+
+        // Cart Management
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+            updateCartBadge();
+            showToast(`Adicionado: ${product.name}`);
+        }
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cart-badge');
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            if (totalCount > 0) {
+                badge.innerText = totalCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function openCart() {
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = '';
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="py-12 text-center space-y-3">
+                        <i class="fa-solid fa-cart-shopping text-4xl text-slate-300"></i>
+                        <p class="text-slate-500 font-medium">Seu carrinho está vazio.</p>
+                    </div>
+                `;
+            } else {
+                cart.forEach((item, index) => {
+                    container.innerHTML += `
+                        <div class="flex items-center justify-between gap-4 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+                            <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-xl">
+                            <div class="flex-1">
+                                <h5 class="font-bold text-sm text-slate-900">${item.name}</h5>
+                                <p class="text-xs text-brand-700 font-semibold">R$ ${item.price.toFixed(2).replace('.', ',')} un.</p>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="changeQty(${index}, -1)" class="w-7 h-7 bg-white border border-slate-300 rounded-lg font-bold text-sm flex items-center justify-center hover:bg-slate-100">-</button>
+                                <span class="text-sm font-semibold">${item.qty}</span>
+                                <button onclick="changeQty(${index}, 1)" class="w-7 h-7 bg-white border border-slate-300 rounded-lg font-bold text-sm flex items-center justify-center hover:bg-slate-100">+</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            document.getElementById('cart-total-price').innerText = `R$ ${totalPrice.toFixed(2).replace('.', ',')}`;
+            document.getElementById('cart-modal').classList.remove('hidden');
+        }
+
+        function closeCart() {
+            document.getElementById('cart-modal').classList.add('hidden');
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartBadge();
+            openCart();
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                showToast('Carrinho vazio!', 'error');
+                return;
+            }
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            
+            // Automatically generate a charge for the default seller
+            const charges = JSON.parse(localStorage.getItem('mega_charges')) || [];
+            const newCharge = {
+                id: 'CHG-' + Math.floor(1000 + Math.random() * 9000),
+                client: 'Cliente do E-commerce (Carrinho)',
+                phone: '(11) 99999-0000',
+                description: cart.map(i => `${i.qty}x ${i.name}`).join(', '),
+                amount: totalPrice,
+                seller: currentSeller,
+                status: 'pendente',
+                pixCode: '00020126580014br.gov.bcb.pix.payload.' + Math.random().toString(36).substring(7)
+            };
+            charges.unshift(newCharge);
+            localStorage.setItem('mega_charges', JSON.stringify(charges));
+
+            cart = [];
+            updateCartBadge();
+            closeCart();
+
+            // Show Pix Payment Modal
+            document.getElementById('pix-copy-input').value = newCharge.pixCode;
+            document.getElementById('pix-modal').classList.remove('hidden');
+            renderSellerDashboard();
+            showToast('Pedido realizado! PIX gerado com sucesso.');
+        }
+
+        function closePixModal() {
+            document.getElementById('pix-modal').classList.add('hidden');
+        }
+
+        // Custom Product Order Submission
+        function submitCustomOrder(event) {
+            event.preventDefault();
+            const type = document.getElementById('custom-type').value;
+            const qty = document.getElementById('custom-qty').value;
+            const theme = document.getElementById('custom-theme').value;
+            const text = document.getElementById('custom-text').value;
+            const obs = document.getElementById('custom-obs').value;
+
+            const charges = JSON.parse(localStorage.getItem('mega_charges')) || [];
+            const estimatedValue = qty * 4.50; // Estimated calculation
+            const newCharge = {
+                id: 'CUST-' + Math.floor(1000 + Math.random() * 9000),
+                client: 'Cliente Personalizado (' + text + ')',
+                phone: '(11) 98888-9999',
+                description: `${type} - Qtd: ${qty} - Tema: ${theme}`,
+                amount: estimatedValue,
+                seller: currentSeller,
+                status: 'pendente',
+                pixCode: '00020126580014br.gov.bcb.pix.custom.' + Math.random().toString(36).substring(7)
+            };
+
+            charges.unshift(newCharge);
+            localStorage.setItem('mega_charges', JSON.stringify(charges));
+
+            document.getElementById('custom-form').reset();
+            
+            // Show PIX modal for custom order
+            document.getElementById('pix-copy-input').value = newCharge.pixCode;
+            document.getElementById('pix-modal').classList.remove('hidden');
+            renderSellerDashboard();
+            showToast('Solicitação personalizada enviada e PIX gerado!');
+        }
+
+        // Seller Dashboard Management
+        function changeSeller(sellerName) {
+            currentSeller = sellerName;
+            document.getElementById('seller-welcome-name').innerText = `Painel de ${sellerName}`;
+            renderSellerDashboard();
+        }
+
+        function renderSellerDashboard() {
+            const charges = JSON.parse(localStorage.getItem('mega_charges')) || [];
+            const sellerCharges = charges.filter(c => c.seller === currentSeller);
+
+            const totalBilled = sellerCharges.reduce((sum, c) => sum + c.amount, 0);
+            const totalPaid = sellerCharges.filter(c => c.status === 'pago').reduce((sum, c) => sum + c.amount, 0);
+            const totalPending = sellerCharges.filter(c => c.status === 'pendente').reduce((sum, c) => sum + c.amount, 0);
+
+            document.getElementById('stat-total-billed').innerText = `R$ ${totalBilled.toFixed(2).replace('.', ',')}`;
+            document.getElementById('stat-total-paid').innerText = `R$ ${totalPaid.toFixed(2).replace('.', ',')}`;
+            document.getElementById('stat-total-pending').innerText = `R$ ${totalPending.toFixed(2).replace('.', ',')}`;
+
+            const tbody = document.getElementById('charges-table-body');
+            tbody.innerHTML = '';
+
+            const filteredList = sellerCharges.filter(c => {
+                if (filterChargeStatus === 'all') return true;
+                return c.status === filterChargeStatus;
+            });
+
+            if (filteredList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="py-8 text-center text-slate-400">Nenhuma cobrança encontrada para este filtro.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            filteredList.forEach(charge => {
+                const badgeClass = charge.status === 'pago' ? 'bg-emerald-100 text-brand-800' : 'bg-amber-100 text-amber-800';
+                const statusLabel = charge.status === 'pago' ? 'Pago' : 'Pendente';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-4">
+                            <span class="font-bold text-slate-900 block">${charge.client}</span>
+                            <span class="text-xs text-slate-500">${charge.description}</span>
+                        </td>
+                        <td class="py-4 font-extrabold text-brand-700">R$ ${charge.amount.toFixed(2).replace('.', ',')}</td>
+                        <td class="py-4 text-slate-600">${charge.seller}</td>
+                        <td class="py-4">
+                            <span class="px-2.5 py-1 rounded-full text-xs font-semibold ${badgeClass}">${statusLabel}</span>
+                        </td>
+                        <td class="py-4 text-right space-x-2">
+                            <button onclick="toggleChargeStatus('${charge.id}')" title="Alternar Status" class="p-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition">
+                                <i class="fa-solid fa-rotate"></i>
+                            </button>
+                            <button onclick="copyChargePix('${charge.pixCode}')" title="Copiar PIX" class="p-2 bg-brand-50 hover:bg-brand-600 text-brand-700 hover:text-white rounded-xl transition">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function generatePixCharge(event) {
+            event.preventDefault();
+            const client = document.getElementById('pix-client-name').value;
+            const phone = document.getElementById('pix-client-phone').value;
+            const desc = document.getElementById('pix-description').value;
+            const amount = parseFloat(document.getElementById('pix-amount').value);
+
+            const charges = JSON.parse(localStorage.getItem('mega_charges')) || [];
+            const newCharge = {
+                id: 'CHG-' + Math.floor(1000 + Math.random() * 9000),
+                client: client,
+                phone: phone,
+                description: desc,
+                amount: amount,
+                seller: currentSeller,
+                status: 'pendente',
+                pixCode: `00020126580014br.gov.bcb.pix.manual.${Math.random().toString(36).substring(7)}`
+            };
+
+            charges.unshift(newCharge);
+            localStorage.setItem('mega_charges', JSON.stringify(charges));
+
+            document.getElementById('pix-form').reset();
+            renderSellerDashboard();
+
+            // Show PIX modal for customer copy
+            document.getElementById('pix-copy-input').value = newCharge.pixCode;
+            document.getElementById('pix-modal').classList.remove('hidden');
+            showToast('Cobrança PIX gerada com sucesso!');
+        }
+
+        function toggleChargeStatus(chargeId) {
+            const charges = JSON.parse(localStorage.getItem('mega_charges')) || [];
+            const charge = charges.find(c => c.id === chargeId);
+            if (charge) {
+                charge.status = charge.status === 'pago' ? 'pendente' : 'pago';
+                localStorage.setItem('mega_charges', JSON.stringify(charges));
+                renderSellerDashboard();
+                showToast(`Status da cobrança ${charge.id} atualizado!`);
+            }
+        }
+
+        function filterCharges(status) {
+            filterChargeStatus = status;
+            ['all', 'pendente', 'pago'].forEach(s => {
+                const btn = document.getElementById(`filter-${s}`);
+                if (s === status) {
+                    btn.className = "text-xs font-semibold px-3 py-1.5 rounded-lg bg-brand-600 text-white transition";
+                } else {
+                    btn.className = "text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition";
+                }
+            });
+            renderSellerDashboard();
+        }
+
+        function copyChargePix(code) {
+            const input = document.createElement('textarea');
+            input.value = code;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            showToast('Chave PIX Copia e Cola copiada!');
+        }
+
+        function copyPixCode() {
+            const input = document.getElementById('pix-copy-input');
+            input.select();
+            document.execCommand('copy');
+            showToast('Chave PIX copiada para a área de transferência!');
+        }
+
+        // Toast Notification Helper
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msg = document.getElementById('toast-msg');
+            const icon = document.getElementById('toast-icon');
+
+            msg.innerText = message;
+            if (type === 'error') {
+                icon.className = "fa-solid fa-circle-exclamation text-rose-500 text-lg";
+            } else {
+                icon.className = "fa-solid fa-check-circle text-brand-500 text-lg";
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
